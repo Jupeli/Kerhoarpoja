@@ -1,4 +1,22 @@
+//////////////////////////////////////////////////////////////////////
+///     LUMATE-kerhoarpoja
+///     Lauri Pitkäjärvi
+///     lauri.pitkajarvi@gmail.com
+///
+///     Split-funktion esittely
+///
+///     Funktio pilkkoo merkkijonon haluttujen erotinmerkkien
+///     kohdalta ja palauttaa merkkijonon osat vektorissa.
+///
+
 #ifndef SPLIT_HH
 #define SPLIT_HH
+
+#include <vector>
+#include <iostream>
+#include <string>
+
+std::vector<std::string> split(const std::string& s, const char delimiter,
+                               bool ignore_empty = false);
 
 #endif // SPLIT_HH
