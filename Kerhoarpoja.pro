@@ -5,7 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-    split.cpp
+    split.cpp \
+    arpoja.cpp
 
 HEADERS += \
-    split.hh
+    split.hh \
+    arpoja.hh

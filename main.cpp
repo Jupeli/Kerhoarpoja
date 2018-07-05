@@ -3,6 +3,8 @@
 ///     Lauri Pitkäjärvi
 ///     lauri.pitkajarvi@gmail.com
 ///
+///     main.cpp
+///
 ///     Ohjelma lukee csv-tiedostosta kerhojen ilmoittautumiset
 ///     ja arpoo kerhoihin osallistujat preferenssit huomioonottaen.
 ///
@@ -17,6 +19,7 @@
 #include <vector>
 
 #include "split.hh" // Split pilkkoo merkkijonon erotinmerkkien kohdalta.
+#include "arpoja.hh"
 // #include "interface.hh" // Käyttöliittymä ja hakualgoritmit
 
 // using Rakenne = std::map<std::string,std::map<std::string,std::vector<Tuote>>>;

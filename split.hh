@@ -3,6 +3,8 @@
 ///     Lauri Pitkäjärvi
 ///     lauri.pitkajarvi@gmail.com
 ///
+///     split.hh
+///
 ///     Split-funktion esittely
 ///
 ///     Funktio pilkkoo merkkijonon haluttujen erotinmerkkien
