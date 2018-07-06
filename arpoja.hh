@@ -22,41 +22,50 @@
 // Struct, joka sisältää kerholaisen tiedot
 struct Kerholainen
 {
-    std::string nimi;
-    int ika;
-    std::string huoltaja;
-    std::string email;
-    std::string puhelin;
-    std::vector< int > toiveet;
-    bool kuvauslupa;
-    bool tyokuvauslupa;
-    bool tiedotteet;
+    std::string id_;
+    std::string nimi_;
+    int ika_;
+    std::string huoltaja_;
+    std::string email_;
+    std::string puhelin_;
+    std::vector< int > toiveet_;
+    bool kuvauslupa_;
+    bool tyokuvauslupa_;
+    bool tiedotteet_;
 };
 
 using Kerholaiset = std::map<std::string, std::shared_ptr<Kerholainen> >;
 
-//using IdSet = std::set<std::string>;
+using IdSet = std::set<std::string>;
 
-/*  Class: Familytree
- *  Description: Datastructure for Person-structs
- */
 class Arpoja
 {
+
 public:
+
     Arpoja();
     ~Arpoja();
 
-//    /* Description: Adds a new Person to the datastructure.
-//     * Parameters:
-//     *  Param1: Person's ID string
-//     *  Param2: Person's height
-//     *  Param3: Output-stream for error-printing
-//     * Errormessages:
-//     *  If person's ID is already in datastructure:
-//     *      "Error. Person already added."
-//     */
-//    void addNewPerson(const std::string& id, const int& height,
-//                      std::ostream &output);
+    void lisaaKerholainen(const std::string& id,
+                          const std::string& nimi,
+                          const int& ika,
+                          const std::string& huoltaja,
+                          const std::string& email,
+                          const std::string& puhelin,
+                          const std::vector< int > toiveet,
+                          const bool& kuvauslupa,
+                          const bool& tyokuvauslupa,
+                          const bool& tiedotteet,
+                          std::ostream &output);
+
+    // Tulostaa kaikki tietorakenteen sisältämiä id:tä vastaavat henkilöt ja iät.
+    void tulostaKaikki(std::ostream &output) const;
+
+private:
+    Kerholaiset data_;
+
+    // Palauttaa id:tä vastaavan osoittimen
+    Kerholainen* getPointer(const std::string& id) const;
 
 };
 
