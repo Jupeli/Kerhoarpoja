@@ -22,127 +22,71 @@
 #include "arpoja.hh"
 // #include "interface.hh" // Käyttöliittymä ja hakualgoritmit
 
-// using Rakenne = std::map<std::string,std::map<std::string,std::vector<Tuote>>>;
-
 // Tarkistaa onko tiedostosta luettu rivi määritelmän mukainen.
 //bool onkoehjarivi(std::vector<std::string>vektorivi);
 
-// Tallentaa tiedostosta splitillä pilkotun rivin tietorakenteeseen.
-// void tallennadata(Rakenne& tietokanta, std::vector<std::string> rivi);
+const char CSV_DELIMITER = ',';
+const int VALINTOJEN_MAARA = 3;
+
+// Tallentaa tiedoston sisällön tietorakenteeseen.
+bool tallennaData(std::ifstream &inputfile, std::shared_ptr<Arpoja> tietokanta);
 
 int main()
 {
-//    Rakenne tietokanta;
+    std::string inputname;
+    std::shared_ptr<Arpoja> tietokanta(new Arpoja);
 
     // Kysytään haluttu tiedostonimi
-    std::string inputname;
     std::cout << "Tiedostonimi: ";
     getline(std::cin, inputname);
 
-    // Avataan tiedosto
-    std::ifstream inputfile(inputname);
-    if (!inputfile){
+    // Avataan tiedosto, tiedostonimi muutettava c_stringiksi jotta sen voi antaa
+    // ifstreamin rakentajalle.
+    std::ifstream inputfile(inputname.c_str());
+    if (not inputfile){
         // Tiedostoa ei löydy, lopetetaan ohjelma
         std::cout << "Virhe: tiedostoa " << inputname << " ei löydy!" << std::endl;
-        return 1;
+        return EXIT_FAILURE;
     }
-    else {
-        // Tiedosto löytyi
-        std::string rivi;
-        // Luetaan tiedostosta jokainen rivi erikseen
-        while (getline(inputfile,rivi)){
-            // Pilkotaan tiedoston rivi vektoriksi
-            std::vector<std::string> vektorivi = split(rivi,',');
-            for (auto alkio:vektorivi){
-                std::cout << alkio << std::endl;
-            }
-//            // Tarkistetaan oliko rivi oikean muotoinen
-//            if (!onkoehjarivi(vektorivi)){
-//                // Ei ollut oikean muotoinen, lopetetaan ohjelma
-//                std::cout<< "Error: the file has an erroneous line" <<std::endl;
-//                return 1;
-//            }
-//            else{
-//                // Rivi oli oikean muotoinen, tallennetaan se tietorakenteeseen.
-//                tallennadata(tietokanta, vektorivi);
-//            }
-        }
-//        // Tiedosto on luettu ja voidaan sulkea.
-        inputfile.close();
-//        // Tiedot on tallennettu, käynnistetään käyttöliittymä.
-//        interface(tietokanta);
+    // tallennaData palauttaa false jos tiedostossa on virhe.
+    if (not tallennaData(inputfile, tietokanta))
+    {
+        return EXIT_FAILURE;
     }
-    return 0;
+
+    // TODO: Käynnistä komentorivikäyttöliittymä.
+    // Cli commandline(tietokanta);
+    // while(commandline.exec_prompt()){}
+    return EXIT_SUCCESS;
 }
 
-//// Tiedoston rivin eheyden tarkastus
-//bool onkoehjarivi(std::vector<std::string> vektorivi){
-//    // Onko rivillä oikea määrä tietoja
-//    if (vektorivi.size() != 4){
-//        return false;
-//    }
-//    for(int i=0; i<=3; ++i){
-//        // Onko rivin alkio tyhjä tai pelkkiä välilyöntejä
-//        if (vektorivi.at(i) == "" ||
-//                vektorivi.at(i).find_first_not_of(" ") == std::string::npos){
-//            return false;
-//        }
-//    }
-//    // Sisältääkö hinta-kenttä pelkkiä numeroita ja yhden pisteen
-//    // (muutettavissa doubleksi) tai tekstin out-of-stock
-//    if ((vektorivi.at(3)!="out-of-stock"
-//         && vektorivi.at(3).find_first_not_of("1234567890.")!=std::string::npos)
-//            || vektorivi.at(3).find_first_of(".")
-//            != vektorivi.at(3).find_last_of(".")){
-//        return false;
-//    }
-//    return true;
-//}
+// Lukee csv-tiedoston ja täyttää sillä tietokannan.
+bool tallennaData(std::ifstream &inputfile, std::shared_ptr<Arpoja> tietokanta){
+    std::string rivi;
+    // Hukataan turha otsikkorivi
+    getline(inputfile,rivi);
 
-//// Tiedoston rivin tallennus tietorakenteeseen
-//void tallennadata(Rakenne &tietokanta, std::vector<std::string> rivi){
-//    std::string ketju = rivi.at(0);
-//    std::string kauppa = rivi.at(1);
-//    std::string tuote = rivi.at(2);
-//    double hinta = 0;
-//    if (rivi.at(3) == "out-of-stock"){
-//        // Jos hinta-kentässä on teksti out-of-stock, tallennetaan hinnaksi -1
-//        // sen merkiksi, että tuote on loppu myymälästä
-//        hinta = -1;
-//    }
-//    else{
-//        hinta = std::stod(rivi.at(3));
-//    }
-//    Tuote tavara = {tuote, hinta};
+    while (getline(inputfile,rivi)){
+        std::vector<std::string> rivivektori = split(rivi,CSV_DELIMITER);
+        std::string nimi = rivivektori.at(0) + " " + rivivektori.at(1);
+        int ika = std::stoi(rivivektori.at(2));
+        std::string huoltaja = rivivektori.at(3);
+        std::string email = rivivektori.at(4);
+        std::string puhelin = rivivektori.at(5);
+        std::vector<int> toiveet = {};
+        for (int i = 6; i < 6+VALINTOJEN_MAARA; ++i){
+            toiveet.push_back(std::stoi(rivivektori.at(i)));
+        }
+        bool kuvauslupa = false;
+        if (rivivektori.at(6+VALINTOJEN_MAARA) == "1") kuvauslupa = true;
+        bool tyokuvauslupa = false;
+        if (rivivektori.at(7+VALINTOJEN_MAARA) == "1") tyokuvauslupa = true;
+        bool tiedotteet = false;
+        if (rivivektori.at(8+VALINTOJEN_MAARA) == "1") tiedotteet = true;
+        std::string id = nimi + huoltaja;
 
-//    if (tietokanta.find(ketju) != tietokanta.end()){
-//        // Kauppaketju löytyy jo tietokannasta
-//        if (tietokanta.at(ketju).find(kauppa) != tietokanta.at(ketju).end()){
-//            // Kauppa löytyy jo kauppaketjusta
-//            bool tuoteon = false;
-//            for (std::vector<Tuote>::size_type i = 0;
-//                 i < tietokanta.at(ketju).at(kauppa).size(); ++i){
-//                if (tietokanta.at(ketju).at(kauppa).at(i).tuotenimi == tuote){
-//                    // Samanniminen tuote löytyy jo kaupasta, muutetaan hintaa
-//                    tietokanta.at(ketju).at(kauppa).at(i).hinta = hinta;
-//                    tuoteon = true;
-//                }
-//            }
-//            if (!tuoteon){
-//                // Tuotetta ei löytynyt kaupasta, lisätään tuote
-//                tietokanta.at(ketju).at(kauppa).push_back(tavara);
-//            }
-//        }
-//        else{
-//            // Kauppaa ei löytynyt kauppaketjusta, lisätään uusi kauppa
-//            std::vector<Tuote> vtuote = {tavara};
-//            tietokanta.at(ketju).insert({kauppa, vtuote});
-//        }
-//    }
-//    else{
-//        // Kauppaketjua ei löytynyt, lisätään uusi kauppaketju
-//        std::vector<Tuote> vtuote = {tavara};
-//        std::map<std::string, std::vector<Tuote>> mkauppa = {{kauppa, vtuote}};
-//        tietokanta.insert({ketju, mkauppa});
-//    }
-//}
+        tietokanta->lisaaKerholainen(id, nimi, ika, huoltaja, email, puhelin, toiveet, kuvauslupa, tyokuvauslupa, tiedotteet, std::cout);
+    }
+    tietokanta->tulostaKaikki(std::cout);
+    return EXIT_SUCCESS;
+}
