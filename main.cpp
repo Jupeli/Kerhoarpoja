@@ -17,13 +17,10 @@
 #include <map>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 
 #include "split.hh" // Split pilkkoo merkkijonon erotinmerkkien kohdalta.
 #include "arpoja.hh"
-// #include "interface.hh" // Käyttöliittymä ja hakualgoritmit
-
-// Tarkistaa onko tiedostosta luettu rivi määritelmän mukainen.
-//bool onkoehjarivi(std::vector<std::string>vektorivi);
 
 const char CSV_DELIMITER = ',';
 const int VALINTOJEN_MAARA = 3;
@@ -63,10 +60,12 @@ int main()
 // Lukee csv-tiedoston ja täyttää sillä tietokannan.
 bool tallennaData(std::ifstream &inputfile, std::shared_ptr<Arpoja> tietokanta){
     std::string rivi;
+
     // Hukataan turha otsikkorivi
     getline(inputfile,rivi);
 
     while (getline(inputfile,rivi)){
+        // TODO: Tähän kutsu rivin eheyden tarkastusfunktiolle!
         std::vector<std::string> rivivektori = split(rivi,CSV_DELIMITER);
         std::string nimi = rivivektori.at(0) + " " + rivivektori.at(1);
         int ika = std::stoi(rivivektori.at(2));
@@ -75,7 +74,10 @@ bool tallennaData(std::ifstream &inputfile, std::shared_ptr<Arpoja> tietokanta){
         std::string puhelin = rivivektori.at(5);
         std::vector<int> toiveet = {};
         for (int i = 6; i < 6+VALINTOJEN_MAARA; ++i){
-            toiveet.push_back(std::stoi(rivivektori.at(i)));
+            int toive = std::stoi(rivivektori.at(i));
+            if (std::find(toiveet.begin(), toiveet.end(), toive) == toiveet.end()){
+                toiveet.push_back(std::stoi(rivivektori.at(i)));
+            }
         }
         bool kuvauslupa = false;
         if (rivivektori.at(6+VALINTOJEN_MAARA) == "1") kuvauslupa = true;

@@ -56,7 +56,12 @@ void Arpoja::tulostaKaikki(std::ostream &output) const
 {
     for ( auto kerholainen : data_){
         output << kerholainen.second->nimi_ << ", " <<
-                  kerholainen.second->ika_ << std::endl;
+                  kerholainen.second->ika_ << "v." << std::endl;
+        int toivelaskuri = 0;
+        for (auto toive : kerholainen.second->toiveet_){
+            ++ toivelaskuri;
+            output << "    Kerhotoive " << toivelaskuri << ": " << toive << std::endl;
+        }
     }
 }
 

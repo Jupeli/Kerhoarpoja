@@ -58,7 +58,7 @@ public:
                           const bool& tiedotteet,
                           std::ostream &output);
 
-    // Tulostaa kaikki tietorakenteen sisältämiä id:tä vastaavat henkilöt ja iät.
+    // Tulostaa kaikki tietorakenteen sisältämiä id:tä vastaavat henkilöt, iät ja toiveet.
     void tulostaKaikki(std::ostream &output) const;
 
 private:
