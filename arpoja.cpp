@@ -52,7 +52,7 @@ void Arpoja::lisaaKerholainen(const std::string &id,
     }
 }
 
-void Arpoja::tulostaKaikki(std::ostream &output) const
+void Arpoja::tulostaIlmoittautuneet(std::ostream &output) const
 {
     for ( auto kerholainen : data_){
         output << kerholainen.second->nimi_ << ", " <<
@@ -64,6 +64,7 @@ void Arpoja::tulostaKaikki(std::ostream &output) const
         }
     }
 }
+
 
 Kerholainen *Arpoja::getPointer(const std::string &id) const
 {

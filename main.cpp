@@ -54,6 +54,7 @@ int main()
     // TODO: Käynnistä komentorivikäyttöliittymä.
     // Cli commandline(tietokanta);
     // while(commandline.exec_prompt()){}
+    tietokanta->tulostaIlmoittautuneet(std::cout);
     return EXIT_SUCCESS;
 }
 
@@ -89,6 +90,5 @@ bool tallennaData(std::ifstream &inputfile, std::shared_ptr<Arpoja> tietokanta){
 
         tietokanta->lisaaKerholainen(id, nimi, ika, huoltaja, email, puhelin, toiveet, kuvauslupa, tyokuvauslupa, tiedotteet, std::cout);
     }
-    tietokanta->tulostaKaikki(std::cout);
-    return EXIT_SUCCESS;
+    return true;
 }

@@ -34,7 +34,17 @@ struct Kerholainen
     bool tiedotteet_;
 };
 
+struct Kerho
+{
+    int id_;
+    std::string nimi_;
+    int max_os_;
+    IdSet osallistujat_;
+};
+
 using Kerholaiset = std::map<std::string, std::shared_ptr<Kerholainen> >;
+
+using Kerhot = std::map<int, std::shared_ptr<Kerho> >;
 
 using IdSet = std::set<std::string>;
 
@@ -59,11 +69,21 @@ public:
                           std::ostream &output);
 
     // Tulostaa kaikki tietorakenteen sisältämiä id:tä vastaavat henkilöt, iät ja toiveet.
-    void tulostaKaikki(std::ostream &output) const;
+    void tulostaIlmoittautuneet(std::ostream &output) const;
+
+    // Pyytää käyttäjää määrittelemään kerhojen tiedot.
+    std::vector<int> maaritaKerhot(std::ostream &output);
+
+    void tulostaKerhot(std::ostream &output) const;
+
+    // Arpoo osallistujat kerhoihin ja palauttaa arvonnan tulokset vektorissa.
+    //    std::vector<IdSet> arvoOsallistujat(const int kerhot,
+    //                                        const std::vector<int> max_osallistujat,
+    //                                        std::ostream &output);
 
 private:
     Kerholaiset data_;
-
+    Kerhot kerho_;
     // Palauttaa id:tä vastaavan osoittimen
     Kerholainen* getPointer(const std::string& id) const;
 
