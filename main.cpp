@@ -55,6 +55,8 @@ int main()
     // Cli commandline(tietokanta);
     // while(commandline.exec_prompt()){}
     tietokanta->tulostaIlmoittautuneet(std::cout);
+    tietokanta->maaritaKerhot(std::cout);
+    tietokanta->tulostaKerhot(std::cout);
     return EXIT_SUCCESS;
 }
 

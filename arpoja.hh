@@ -18,6 +18,9 @@
 #include <set>
 #include <iostream>
 
+const int MAX_OSALLISTUJAT_DEFAULT = 12;
+
+using IdVector = std::vector<std::string>;
 
 // Struct, joka sisältää kerholaisen tiedot
 struct Kerholainen
@@ -39,14 +42,14 @@ struct Kerho
     int id_;
     std::string nimi_;
     int max_os_;
-    IdSet osallistujat_;
+    IdVector osallistujat_;
 };
 
 using Kerholaiset = std::map<std::string, std::shared_ptr<Kerholainen> >;
 
 using Kerhot = std::map<int, std::shared_ptr<Kerho> >;
 
-using IdSet = std::set<std::string>;
+
 
 class Arpoja
 {
@@ -72,7 +75,7 @@ public:
     void tulostaIlmoittautuneet(std::ostream &output) const;
 
     // Pyytää käyttäjää määrittelemään kerhojen tiedot.
-    std::vector<int> maaritaKerhot(std::ostream &output);
+    void maaritaKerhot(std::ostream &output);
 
     void tulostaKerhot(std::ostream &output) const;
 
@@ -83,9 +86,10 @@ public:
 
 private:
     Kerholaiset data_;
-    Kerhot kerho_;
+    Kerhot kerhot_;
     // Palauttaa id:tä vastaavan osoittimen
     Kerholainen* getPointer(const std::string& id) const;
+    Kerho* getKerhoPointer(const int& id) const;
 
 };
 
