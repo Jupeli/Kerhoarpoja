@@ -77,26 +77,26 @@ void Arpoja::maaritaKerhot(std::ostream &output)
     int osallistujat_max = MAX_OSALLISTUJAT_DEFAULT;
 
     for (int i = 0; i <= kerhoid_max; ++i){
-        std::string nimi;
-        std::string maxos_string;
-        IdVector ilmoittautuneet;
-        output << "Kerho ID " << i << std::endl;
-        output << "Anna kerhon nimi: ";
-        getline(std::cin, nimi);
-        output << "Anna maksimiosallistujamäärä (tyhjä = " << osallistujat_max << "): ";
-        getline(std::cin, maxos_string);
-        // Jos maxos_string on valid int
-        //osallistujat_max = std::stoi(maxos_string);
-        for (auto kerholainen : data_){
-            for (auto toive : kerholainen.second->toiveet_){
-                if (toive == i){
-                    ilmoittautuneet.push_back(kerholainen.second->id_);
-                }
-            }
-        }
         if (getKerhoPointer(i) != nullptr){
             output << "Virhe! Kerhon tiedot on jo lisätty." << std::endl;
         } else {
+            std::string nimi;
+            std::string maxos_string;
+            IdVector ilmoittautuneet;
+            output << "Kerho ID " << i << std::endl;
+            output << "Anna kerhon nimi: ";
+            getline(std::cin, nimi);
+            output << "Anna maksimiosallistujamäärä (tyhjä = " << osallistujat_max << "): ";
+            getline(std::cin, maxos_string);
+            // Jos maxos_string on valid int
+            //osallistujat_max = std::stoi(maxos_string);
+            for (auto kerholainen : data_){
+                for (auto toive : kerholainen.second->toiveet_){
+                    if (toive == i){
+                        ilmoittautuneet.push_back(kerholainen.second->id_);
+                    }
+                }
+            }
             std::shared_ptr<Kerho> uusi_kerho(new Kerho);
             uusi_kerho->id_ = i;
             uusi_kerho->nimi_ = nimi;
@@ -104,9 +104,6 @@ void Arpoja::maaritaKerhot(std::ostream &output)
             uusi_kerho->osallistujat_ = ilmoittautuneet;
             kerhot_.insert({i, uusi_kerho});
         }
-
-
-
     }
     output << "Kaikkien kerhojen tiedot lisätty!" << std::endl;
 }
@@ -115,7 +112,7 @@ void Arpoja::tulostaKerhot(std::ostream &output) const
 {
     for ( auto kerho : kerhot_){
         output << "Kerho ID " << kerho.second->id_ << ": " <<
-                  kerho.second-> nimi_ << std::endl;
+                  kerho.second->nimi_ << std::endl;
         unsigned int raja = kerho.second->max_os_;
         if (kerho.second->osallistujat_.size() < raja){
             raja = kerho.second->osallistujat_.size();
@@ -125,6 +122,19 @@ void Arpoja::tulostaKerhot(std::ostream &output) const
         }
         output << std::endl;
     }
+}
+
+void Arpoja::arvoOsallistujat(std::ostream &output)
+{
+    for (auto kerho : kerhot_){
+        std::random_shuffle ( kerho.second->osallistujat_.begin(), kerho.second->osallistujat_.end() );
+    }
+    output << "Osallistujalistat sekoitettu." << std::endl;
+}
+
+void Arpoja::poistaTuplat(std::ostream &output)
+{
+
 }
 
 

@@ -57,6 +57,8 @@ int main()
     tietokanta->tulostaIlmoittautuneet(std::cout);
     tietokanta->maaritaKerhot(std::cout);
     tietokanta->tulostaKerhot(std::cout);
+    tietokanta->arvoOsallistujat(std::cout);
+    tietokanta->tulostaKerhot(std::cout);
     return EXIT_SUCCESS;
 }
 

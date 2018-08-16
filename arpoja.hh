@@ -13,6 +13,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <memory>
 #include <map>
 #include <set>
@@ -77,12 +78,14 @@ public:
     // Pyytää käyttäjää määrittelemään kerhojen tiedot.
     void maaritaKerhot(std::ostream &output);
 
+    // Tulostaa kaikki kerhot osallistujineen.
     void tulostaKerhot(std::ostream &output) const;
 
-    // Arpoo osallistujat kerhoihin ja palauttaa arvonnan tulokset vektorissa.
-    //    std::vector<IdSet> arvoOsallistujat(const int kerhot,
-    //                                        const std::vector<int> max_osallistujat,
-    //                                        std::ostream &output);
+    // Sekoittaa osallistujaluettelot
+    void arvoOsallistujat(std::ostream &output);
+
+    // Poistaa ylimääräiset ilmoittautumiset
+    void poistaTuplat(std::ostream &output);
 
 private:
     Kerholaiset data_;
