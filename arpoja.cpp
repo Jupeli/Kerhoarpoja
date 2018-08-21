@@ -23,7 +23,7 @@ Arpoja::~Arpoja()
 // Lisää yhden kerholaisen tietorakenteeseen
 void Arpoja::lisaaKerholainen(const std::string &id,
                               const std::string &nimi,
-                              const int &ika,
+                              const std::string &ika,
                               const std::string &huoltaja,
                               const std::string &email,
                               const std::string &puhelin,
@@ -56,7 +56,7 @@ void Arpoja::tulostaIlmoittautuneet(std::ostream &output) const
 {
     for ( auto kerholainen : data_){
         output << kerholainen.second->nimi_ << ", " <<
-                  kerholainen.second->ika_ << "v." << std::endl;
+                  kerholainen.second->ika_ << std::endl;
         int toivelaskuri = 0;
         for (auto toive : kerholainen.second->toiveet_){
             ++ toivelaskuri;
@@ -134,7 +134,9 @@ void Arpoja::arvoOsallistujat(std::ostream &output)
 
 void Arpoja::poistaTuplat(std::ostream &output)
 {
+    for (auto kerho : kerhot_){
 
+    }
 }
 
 

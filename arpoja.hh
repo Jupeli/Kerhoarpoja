@@ -28,7 +28,7 @@ struct Kerholainen
 {
     std::string id_;
     std::string nimi_;
-    int ika_;
+    std::string ika_;
     std::string huoltaja_;
     std::string email_;
     std::string puhelin_;
@@ -62,7 +62,7 @@ public:
 
     void lisaaKerholainen(const std::string& id,
                           const std::string& nimi,
-                          const int& ika,
+                          const std::string& ika,
                           const std::string& huoltaja,
                           const std::string& email,
                           const std::string& puhelin,

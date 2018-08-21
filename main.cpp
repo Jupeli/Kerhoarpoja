@@ -22,7 +22,7 @@
 #include "split.hh" // Split pilkkoo merkkijonon erotinmerkkien kohdalta.
 #include "arpoja.hh"
 
-const char CSV_DELIMITER = ',';
+const char CSV_DELIMITER = ';';
 const int VALINTOJEN_MAARA = 3;
 
 // Tallentaa tiedoston sisällön tietorakenteeseen.
@@ -73,7 +73,7 @@ bool tallennaData(std::ifstream &inputfile, std::shared_ptr<Arpoja> tietokanta){
         // TODO: Tähän kutsu rivin eheyden tarkastusfunktiolle!
         std::vector<std::string> rivivektori = split(rivi,CSV_DELIMITER);
         std::string nimi = rivivektori.at(0) + " " + rivivektori.at(1);
-        int ika = std::stoi(rivivektori.at(2));
+        std::string ika = rivivektori.at(2);
         std::string huoltaja = rivivektori.at(3);
         std::string email = rivivektori.at(4);
         std::string puhelin = rivivektori.at(5);
