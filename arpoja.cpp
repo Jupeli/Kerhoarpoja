@@ -73,10 +73,10 @@ void Arpoja::maaritaKerhot(std::ostream &output)
             if (toive > kerhoid_max) kerhoid_max = toive;
         }
     }
-    output << "Löydettiin " << kerhoid_max+1 << " kerhoa, anna kerhojen tiedot:" << std::endl;
+    output << "Löydettiin " << kerhoid_max << " kerhoa, anna kerhojen tiedot:" << std::endl;
     int osallistujat_max = MAX_OSALLISTUJAT_DEFAULT;
 
-    for (int i = 0; i <= kerhoid_max; ++i){
+    for (int i = 1; i <= kerhoid_max; ++i){
         if (getKerhoPointer(i) != nullptr){
             output << "Virhe! Kerhon tiedot on jo lisätty." << std::endl;
         } else {

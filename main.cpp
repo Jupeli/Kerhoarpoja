@@ -80,7 +80,7 @@ bool tallennaData(std::ifstream &inputfile, std::shared_ptr<Arpoja> tietokanta){
         std::vector<int> toiveet = {};
         for (int i = 6; i < 6+VALINTOJEN_MAARA; ++i){
             int toive = std::stoi(rivivektori.at(i));
-            if (std::find(toiveet.begin(), toiveet.end(), toive) == toiveet.end()){
+            if (toive != 0 and std::find(toiveet.begin(), toiveet.end(), toive) == toiveet.end()){
                 toiveet.push_back(std::stoi(rivivektori.at(i)));
             }
         }
