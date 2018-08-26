@@ -127,8 +127,10 @@ void Arpoja::tulostaKerhot(std::ostream &output) const
 void Arpoja::arvoOsallistujat(std::ostream &output)
 {
     for (auto kerho : kerhot_){
-        std::random_shuffle ( kerho.second->osallistujat_.begin(), kerho.second->osallistujat_.end() );
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        std::shuffle ( kerho.second->osallistujat_.begin(), kerho.second->osallistujat_.end(), std::default_random_engine(seed) );
     }
+
     output << "Osallistujalistat sekoitettu." << std::endl;
 }
 
@@ -191,7 +193,7 @@ void Arpoja::tulostaCsv(std::ostream &output)
                     << kerholainen->puhelin_ << ";"
                     << kerholainen->kuvauslupa_ << ";"
                     << kerholainen->tyokuvauslupa_ << ";"
-                    << kerholainen->tiedotteet_ << ";"
+                    << kerholainen->tiedotteet_
                     << std::endl;
         }
         csvfile << std::endl;
