@@ -54,11 +54,14 @@ int main()
     // TODO: Käynnistä komentorivikäyttöliittymä.
     // Cli commandline(tietokanta);
     // while(commandline.exec_prompt()){}
-    tietokanta->tulostaIlmoittautuneet(std::cout);
+//    tietokanta->tulostaIlmoittautuneet(std::cout);
     tietokanta->maaritaKerhot(std::cout);
-    tietokanta->tulostaKerhot(std::cout);
+//    tietokanta->tulostaKerhot(std::cout);
     tietokanta->arvoOsallistujat(std::cout);
+//    tietokanta->tulostaKerhot(std::cout);
+    tietokanta->poistaTuplat(std::cout);
     tietokanta->tulostaKerhot(std::cout);
+    tietokanta->tulostaCsv(std::cout);
     return EXIT_SUCCESS;
 }
 

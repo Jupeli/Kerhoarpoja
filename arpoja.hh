@@ -18,6 +18,7 @@
 #include <map>
 #include <set>
 #include <iostream>
+#include <fstream>
 
 const int MAX_OSALLISTUJAT_DEFAULT = 12;
 
@@ -86,6 +87,9 @@ public:
 
     // Poistaa ylimääräiset ilmoittautumiset
     void poistaTuplat(std::ostream &output);
+
+    // Tulostaa arvontatulokset csv-tiedostona.
+    void tulostaCsv(std::ostream &output);
 
 private:
     Kerholaiset data_;

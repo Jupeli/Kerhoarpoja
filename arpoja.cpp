@@ -134,9 +134,70 @@ void Arpoja::arvoOsallistujat(std::ostream &output)
 
 void Arpoja::poistaTuplat(std::ostream &output)
 {
-    for (auto kerho : kerhot_){
-
+    while(true){
+        // Apumuuttuja, joka kertoo onko iteraatiokierroksella poistettu ketään.
+        bool poistettu = false;
+        // Käydään läpi kaikki ilmoittautuneet yksi kerrallaan
+        for (auto ilmoittautuja : data_){
+            // Apumuuttuja, joka kertoo onko henkilö valittu johonkin kerhoon.
+            bool valittu = false;
+            // Käydään läpi ilmoittautujan toivevektori järjestyksessä.
+            for (auto toive : ilmoittautuja.second->toiveet_){
+                Kerho* kerho = getKerhoPointer(toive);
+                // Jos ilmoittautunut on toivomassaan kerhossa valittujen joukossa, merkitään kerholainen valituksi.
+                for (int i = 0; i < kerho->max_os_; ++i){
+                    if (kerho->osallistujat_.at(i) == ilmoittautuja.first){
+                        // Jos kerholainen oli jo aiemmin valittu, poistetaan kerholainen kerhosta.
+                        if (valittu == true){
+                            kerho->osallistujat_.erase(kerho->osallistujat_.begin()+i);
+                            // Merkitään apumuuttujaan että ainakin yksi kerholainen on poistettu.
+                            poistettu = true;
+                            output << "Poistettu " << ilmoittautuja.second->nimi_ << " kerhosta " << kerho->id_ << ": " << kerho->nimi_ << std::endl;
+                        }
+                        valittu = true;
+                    }
+                }
+            }
+        }
+        if (poistettu == false){
+            break;
+        }
     }
+    output << "Moninkertaiset ilmoittautumiset poistettu!" << std::endl;
+}
+
+void Arpoja::tulostaCsv(std::ostream &output)
+{
+    output << "Syötä tiedostonimi (tiedostopääte lisätään automaattisesti): ";
+    std::string outputname;
+    getline(std::cin, outputname);
+    outputname += ".csv";
+    std::ofstream csvfile;
+    csvfile.open(outputname);
+    for ( auto kerho : kerhot_){
+        csvfile << "Kerho ID " << kerho.second->id_ << ": " <<
+                  kerho.second->nimi_ << std::endl;
+        csvfile << "Nimi;Ikä;Huoltaja;Huoltajan email;Huoltajan puhelin;Kuvauslupa;Töiden kuvauslupa;Saa lähettää tiedotteita" << std::endl;
+        unsigned int raja = kerho.second->max_os_;
+        if (kerho.second->osallistujat_.size() < raja){
+            raja = kerho.second->osallistujat_.size();
+        }
+        for (unsigned int i = 0; i < raja; ++i){
+            Kerholainen* kerholainen = getPointer(kerho.second->osallistujat_.at(i));
+            csvfile << kerholainen->nimi_ << ";"
+                    << kerholainen->ika_ << ";"
+                    << kerholainen->huoltaja_ << ";"
+                    << kerholainen->email_ << ";"
+                    << kerholainen->puhelin_ << ";"
+                    << kerholainen->kuvauslupa_ << ";"
+                    << kerholainen->tyokuvauslupa_ << ";"
+                    << kerholainen->tiedotteet_ << ";"
+                    << std::endl;
+        }
+        csvfile << std::endl;
+    }
+    csvfile.close();
+    output << "Arvontatulokset tulostettu tiedostoon " << outputname << std::endl;
 }
 
 
