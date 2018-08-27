@@ -48,6 +48,7 @@ void Arpoja::lisaaKerholainen(const std::string &id,
         uusi_kerholainen->kuvauslupa_ = kuvauslupa;
         uusi_kerholainen->tyokuvauslupa_ = tyokuvauslupa;
         uusi_kerholainen->tiedotteet_ = tiedotteet;
+        uusi_kerholainen->valittu_ = false;
         data_.insert({id, uusi_kerholainen});
     }
 }
@@ -157,6 +158,7 @@ void Arpoja::poistaTuplat(std::ostream &output)
                             output << "Poistettu " << ilmoittautuja.second->nimi_ << " kerhosta " << kerho->id_ << ": " << kerho->nimi_ << std::endl;
                         }
                         valittu = true;
+                        ilmoittautuja.second->valittu_ = true;
                     }
                 }
             }
@@ -178,7 +180,7 @@ void Arpoja::tulostaCsv(std::ostream &output)
     csvfile.open(outputname);
     for ( auto kerho : kerhot_){
         csvfile << "Kerho ID " << kerho.second->id_ << ": " <<
-                  kerho.second->nimi_ << std::endl;
+                   kerho.second->nimi_ << std::endl;
         csvfile << "Nimi;Ikä;Huoltaja;Huoltajan email;Huoltajan puhelin;Kuvauslupa;Töiden kuvauslupa;Saa lähettää tiedotteita" << std::endl;
         unsigned int raja = kerho.second->max_os_;
         if (kerho.second->osallistujat_.size() < raja){
@@ -197,6 +199,21 @@ void Arpoja::tulostaCsv(std::ostream &output)
                     << std::endl;
         }
         csvfile << std::endl;
+    }
+    csvfile << "Ei valittu mihinkään kerhoon" << std::endl;
+    for (auto ilmoittautuja : data_){
+        if (ilmoittautuja.second->valittu_ == false){
+            Kerholainen* eivalittu = getPointer(ilmoittautuja.first);
+            csvfile << eivalittu->nimi_ << ";"
+                    << eivalittu->ika_ << ";"
+                    << eivalittu->huoltaja_ << ";"
+                    << eivalittu->email_ << ";"
+                    << eivalittu->puhelin_ << ";"
+                    << eivalittu->kuvauslupa_ << ";"
+                    << eivalittu->tyokuvauslupa_ << ";"
+                    << eivalittu->tiedotteet_
+                    << std::endl;
+        }
     }
     csvfile.close();
     output << "Arvontatulokset tulostettu tiedostoon " << outputname << std::endl;

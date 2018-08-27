@@ -38,6 +38,7 @@ struct Kerholainen
     bool kuvauslupa_;
     bool tyokuvauslupa_;
     bool tiedotteet_;
+    bool valittu_;
 };
 
 struct Kerho
