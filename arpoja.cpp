@@ -101,7 +101,9 @@ void Arpoja::maaritaKerhot(std::ostream &output)
             std::shared_ptr<Kerho> uusi_kerho(new Kerho);
             uusi_kerho->id_ = i;
             uusi_kerho->nimi_ = nimi;
-            uusi_kerho->max_os_ = osallistujat_max;
+            int ilmomaara = ilmoittautuneet.size();
+            int osallistujat_max2 = std::min(osallistujat_max, ilmomaara);
+            uusi_kerho->max_os_ = osallistujat_max2;
             uusi_kerho->osallistujat_ = ilmoittautuneet;
             kerhot_.insert({i, uusi_kerho});
         }
@@ -153,6 +155,8 @@ void Arpoja::poistaTuplat(std::ostream &output)
                         // Jos kerholainen oli jo aiemmin valittu, poistetaan kerholainen kerhosta.
                         if (valittu == true){
                             kerho->osallistujat_.erase(kerho->osallistujat_.begin()+i);
+                            // Jos poistetaan vajaasta kerhosta, vähennetään maksimia yhdellä.
+                            if(kerho->osallistujat_.size() < kerho->max_os_) --kerho->max_os_;
                             // Merkitään apumuuttujaan että ainakin yksi kerholainen on poistettu.
                             poistettu = true;
                             output << "Poistettu " << ilmoittautuja.second->nimi_ << " kerhosta " << kerho->id_ << ": " << kerho->nimi_ << std::endl;
